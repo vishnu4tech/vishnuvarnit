@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Ordering</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background: #f9f9f9;
+            position: relative;
+        }
+
+        header {
+            background: #ff4757;
+            color: #fff;
+            padding: 1rem 0;
+            text-align: center;
+        }
+
+        .menu {
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .menu-item {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+            padding: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-item img {
+            width: 100%;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+
+        .menu-item h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .menu-item p {
+            margin-bottom: 1rem;
+            color: #555;
+        }
+
+        .menu-item .price {
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .menu-item button {
+            padding: 0.5rem 1rem;
+            border: none;
+            background: #ff4757;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .menu-item button:hover {
+            background: #e84118;
+        }
+
+        .cart {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 300px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            z-index: 1000;
+        }
+
+        .cart h2 {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .cart ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .cart ul li {
+            border-bottom: 1px solid #ddd;
+            padding: 0.5rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart ul li button {
+            padding: 0.2rem 0.5rem;
+            background: #dc3545;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .cart ul li button:hover {
+            background: #c82333;
+        }
+
+        .cart .total {
+            margin-top: 1rem;
+            font-weight: bold;
+            text-align: right;
+        }
+
+        .payment {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .payment button {
+            padding: 0.5rem 1.5rem;
+            border: none;
+            background: #28a745;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .payment button:hover {
+            background: #218838;
+        }
+
+        footer {
+            background: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+        }
+
+        footer a {
+            color: #ff6b81;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script>
+        let cart = [];
+
+        function addToCart(item, price) {
+            cart.push({ item, price });
+            updateCart();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1); // Remove the item at the given index
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartList = document.getElementById('cart-list');
+            const totalPriceElement = document.getElementById('total-price');
+            cartList.innerHTML = '';
+            let totalPrice = 0;
+
+            cart.forEach((cartItem, index) => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `
+                    ${index + 1}. ${cartItem.item} - $${cartItem.price.toFixed(2)}
+                    <button onclick="removeFromCart(${index})">Remove</button>
+                `;
+                cartList.appendChild(listItem);
+                totalPrice += cartItem.price;
+            });
+
+            totalPriceElement.textContent = `Total: $${totalPrice.toFixed(2)}`;
+        }
+
+        function makePayment() {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+            } else {
+                alert('Proceeding to payment...');
+            }
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Food Ordering</h1>
+        <p>Choose your favorite food and add to cart!</p>
+    </header>
+
+    <section class="menu">
+        <div class="menu-item">
+            <img src="https://simplyhomecooked.com/wp-content/uploads/2023/04/Margherita-Pizza-3.jpg" alt="Pizza">
+            <h3>Margherita Pizza</h3>
+            <p>Classic cheese and tomato pizza.</p>
+            <div class="price">$7.50</div>
+            <button onclick="addToCart('Margherita Pizza', 7.50)">Add to Cart</button>
+        </div>
+        <div class="menu-item">
+            <img src="https://heygrillhey.com/wp-content/uploads/2024/01/HHPP-Square.jpg" alt="Pizza">
+            <h3>Pepperoni Pizza</h3>
+            <p>Loaded with pepperoni slices.</p>
+            <div class="price">$12.00</div>
+            <button onclick="addToCart('Pepperoni Pizza', 12)">Add to Cart</button>
+        </div>
+        <div class="menu-item">
+            <img src="https://popmenucloud.com/cdn-cgi/image/width%3D1200%2Cheight%3D1200%2Cfit%3Dscale-down%2Cformat%3Dauto%2Cquality%3D60/igrmdqve/ee1a7284-e02c-455d-8d8c-3b8829884814.jpg" alt="Pizza">
+            <h3>Veggie Pizza</h3>
+            <p>Topped with fresh vegetables.</p>
+            <div class="price">$9.00</div>
+            <button onclick="addToCart('Veggie Pizza', 9)">Add to Cart</button>
+        </div>
+        <div class="menu-item">
+            <img src="https://b.zmtcdn.com/data/dish_photos/829/7602a3d88b2aeb0053954d96be9a9829.jpeg" alt="Pizza">
+            <h3>BBQ Chicken Pizza</h3>
+            <div class="price">$15.00</div>
+            <button onclick="addToCart('BBQ Chicken Pizza', 15)">Add to Cart</button>
+        </div>
+        <div class="menu-item">
+            <img src="https://pipingpotcurry.com/wp-content/uploads/2024/04/Chicken-Biryani-Piping-Pot-Curry.jpg" alt="Chiken briyan">
+            <h3>Hydrabadi Chicken briyani</h3>
+            <p>Spicy and flavorful.</p>
+            <div class="price">$9.00</div>
+            <button onclick="addToCart('Hydrabadi Chicken briyani', 12)">Add to Cart</button>
+        </div>
+        <div class="menu-item">
+            <img src="https://www.cookwithkushi.com/wp-content/uploads/2016/04/chicken_tikka_biryani_recipe_best_simple_easy.jpg" alt="Chiken fry briyani">
+            <h3>Chicken fry biryani</h3>
+            <p>Spicy and Juicy.</p>
+            <div class="price">$9.00</div>
+            <button onclick="addToCart('Chicken fry biryani', 12)">Add to Cart</button>
+        </div>
+        <div class="menu-item">
+            <img src="https://www.indianhealthyrecipes.com/wp-content/uploads/2022/07/chicken-butter-masala-recipe.jpg" alt="Butter chiken curry">
+            <h3>Butter chicken curry</h3>
+            <p>A mix of everything delicious.</p>
+            <div class="price">$9.00</div>
+            <button onclick="addToCart('Butter chicken curry', 12)">Add to Cart</button> 
+        </div>
+        <div class="menu-item">
+            <img src="https://lentillovingfamily.com/wp-content/uploads/2024/11/garlic-naan-1.jpg" alt="Naan">
+            <h3>Garlic Naan</h3>
+            <p>Crispy and delicious.</p>
+            <div class="price">$9.00</div>
+            <button onclick="addToCart('Garlic Naan',9)">Add to Cart</button>
+        </div>
+        <div class="menu-item">
+            <img src="https://b.zmtcdn.com/data/dish_photos/9a6/d26857e3cf7cd370a9a7a0c4d9dd39a6.jpg" alt="Naan">
+            <h3>Masala Dosa</h3>
+            <p>Crispy rice crepe filled with spiced potato filling.</p>
+            <div class="price">$4.00</div>
+            <button onclick="addToCart('Masala Dosa',4)">Add to Cart</button>
+        </div>
+        <div class="menu-item">
+            <img src="https://www.chefspencil.com/wp-content/uploads/Idli.jpg" alt="Naan">
+            <h3>Idli</h3>
+            <p>Soft, fluffy steamed rice cakes.</p>
+            <div class="price">$4.00</div>
+            <button onclick="addToCart('Idli',4)">Add to Cart</button>
+        </div>
+        <div class="menu-item">
+            <img src="https://static.toiimg.com/photo/53314156.cms" alt="Naan">
+            <h3>Chole Bhatura</h3>
+            <p>Spicy chickpea curry served with deep-fried fluffy bread.</p>
+            <div class="price">$6.00</div>
+            <button onclick="addToCart('Chole Bhatura',6)">Add to Cart</button>
+        </div>
+        <div class="menu-item">
+            <img src="https://images.slurrp.com/prod/recipe_images/transcribe/breakfast/Medu-Vada.webp" alt="Naan">
+            <h3>Medu vada</h3>
+            <p> Crispy, savory doughnuts made from lentils, served with chutney.</p>
+            <div class="price">$9.00</div>
+            <button onclick="addToCart('Medu vada',9)">Add to Cart</button>
+        </div>
+        
+
+        <div class="menu-item">
+            <img src="https://www.sushijunction.com/cdn/shop/products/DSC_7715-Edit-2_0d488b31-47a4-4c06-8ac0-96736cf0599e.jpg?v=1662538848&width=1445" alt="Sushi">
+            <h3>California Roll</h3>
+            <p>Fresh crab and avocado sushi roll.</p>
+            <div class="price">$3.5</div>
+            <button onclick="addToCart('California Roll',3.5)">Add to Cart</button>
+        </div>
+        <div class="menu-item">
+            <img src="https://www.sushijunction.com/cdn/shop/products/DSC_7756-Edit.jpg?v=1682336603&width=1445" alt="Sushi">
+            <h3>Salmon Nigiri</h3>
+            <p>Delicious salmon on rice.</p>
+            <div class="price">$3.5</div>
+            <button onclick="addToCart('Salmon Nigiri',3.5)">Add to Cart</button>
+        </div>
+        <div class="menu-item">
+            <img src="https://www.kitchensanctuary.com/wp-content/uploads/2020/12/Quick-Chicken-Ramen-square-FS-22.jpg" alt="Burger">
+            <h3>Chicken Ramen Noddels</h3>
+            <p>Savory noodles with chicken in broth..</p>
+            <div class="price">$3.5</div>
+            <button onclick="addToCart('Chicken Ramen Noodles',3.5)">Add to Cart</button>
+        </div>
+        <div class="menu-item">
+            <img src="https://www.whiskaffair.com/wp-content/uploads/2020/10/Veg-Hakka-Noodles-2-3.jpg" alt="Sushi">
+            <h3>Veg Hakka Noodles</h3>
+            <p>Stir-fried noodles with veggies and savory sauces.</p>
+            <div class="price">$3.5</div>
+            <button onclick="addToCart('Veg Hakka Noodles',3.5)">Add to Cart</button>
+        </div>
+        <div class="menu-item">
+            <img src="https://leitesculinaria.com/wp-content/uploads/2020/02/classic-cheeseburger-1200.jpg" alt="Burger">
+            <h3>Cheese Burger</h3>
+            <p>Melted cheese on a Chicken patty.</p>
+            <div class="price">$3.5</div>
+            <button onclick="addToCart('Cheese Burger',3.5)">Add to Cart</button>
+        </div>
+        <div class="menu-item">
+            <img src="https://www.sweeterthanoats.com/wp-content/uploads/2022/07/index-thumbs-6.jpg" alt="Burger">
+            <h3>Veggie Burgers with Mushrooms</h3>
+            <p>Juicy mushroom-veggie patty in a toasted bun.</p>
+            <div class="price">$3.5</div>
+            <button onclick="addToCart('Veggie Burger With Mushrooms',3.5)">Add to Cart</button>
+        </div>
+        <div class="menu-item">
+            <img src="https://khaddoroshik.com/wp-content/uploads/2024/03/Aloo-Tikki-Burger-Recipe3.webp" alt="Burger">
+            <h3>Aloo Tikki Burger</h3>
+            <p>Crispy potato patty in a soft bun..</p>
+            <div class="price">$3.5</div>
+            <button onclick="addToCart('Aloo Tikki Burger',3.5)">Add to Cart</button>
+        </div>
+        <div>
+            <div class="menu-item">
+            <img src="https://chaskapoint.ae/wp-content/uploads/2024/09/Homemade-French-Fries_8.jpg" alt="Burger">
+            <h3>crispy French fries</h3>
+            <p>Crispy golden fries perfectly salted Served with tomato sauces.</p>
+            <div class="price">$3.5</div>
+            <button onclick="addToCart('crispy French fries',3.5)">Add to Cart</button>
+        </div>
+    
+
+    </section>
+
+
+    <section class="cart">
+        <h2>Your Cart</h2>
+        <ul id="cart-list">
+            <!-- Cart items will be dynamically added here -->
+        </ul>
+        <div id="total-price" class="total">Total: $0.00</div>
+        <div class="payment">
+            <button onclick="makePayment()">Proceed to Payment</button>
+        </div>
+    </section>
+
+    <footer>
+        <p>Developed by Vishnuvarnit M Komre</p>
+    </footer>
+</body>
+</html>
